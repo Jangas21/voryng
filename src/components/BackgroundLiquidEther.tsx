@@ -8,7 +8,6 @@ export default function BackgroundLiquidEther() {
     <div className="fixed inset-0 z-0" aria-hidden>
       {/* El canvas ocupa toda la pantalla */}
       <div className="absolute inset-0">
-        {/* @ts-expect-error external component */}
         <LiquidEther
           colors={["#5227FF", "#FF9FFC", "#B19EEF"]}
           mouseForce={20}
