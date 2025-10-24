@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import type { ReactNode } from "react";
 import "./globals.css";
 import BackgroundLiquidEther from "@/components/BackgroundLiquidEther";
 import PageTransition from "@/components/PageTransition";
@@ -13,13 +14,16 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+type RootLayoutProps = {
+  children: ReactNode;
+};
 
 export const metadata: Metadata = {
   title: "Voryng",
   description: "Voryng – innovación, automatización y diseño técnico.",
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="es">
       <body>
