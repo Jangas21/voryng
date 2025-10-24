@@ -9,7 +9,7 @@ type AnimatedCardProps = {
   title: string;
   description: string;
   badge: string;
-  href: string;          // Si quieres poder omitirla: pon href?: string
+  href: string;
   className?: string;
 };
 
@@ -44,7 +44,6 @@ export function AnimatedCard({
     </motion.div>
   );
 
-  // Si la tarjeta debe ser clicable
   return (
     <Link href={href} className="block">
       {content}

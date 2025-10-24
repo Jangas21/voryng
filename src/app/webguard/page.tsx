@@ -3,7 +3,6 @@ import { useState } from "react";
 import { ShieldCheck, FileText } from "lucide-react";
 import Header from "@/components/Header";
 
-// 🔹 Definimos el tipo del estado del informe
 type Report = {
   score: number;
   issues: string[];
@@ -12,7 +11,7 @@ type Report = {
 export default function WebGuardPage() {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [report, setReport] = useState<Report | null>(null); // ✅ Tipado correcto
+  const [report, setReport] = useState<Report | null>(null);
 
   const handleAnalyze = async () => {
     setLoading(true);

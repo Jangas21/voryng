@@ -19,7 +19,7 @@ export default function Header() {
         hoveredPillTextColor="#0B0F14"
         pillTextColor="#E5E7EB"
         className="text-[#E5E7EB]"
-        onMobileMenuClick={() => {}}   // ✅ Añade esta línea
+        onMobileMenuClick={() => {}}
       />
     </div>
   );
