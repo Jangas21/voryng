@@ -25,9 +25,9 @@ export default function Home() {
 
         <section id="demo" className="max-w-6xl mx-auto px-6 pb-28 grid md:grid-cols-3 gap-6">
           <AnimatedCard icon={<Shield />} title="WebGuard" description="Análisis de seguridad web con checklist y export a PDF." badge="Core" href="/webguard" />
-          <AnimatedCard icon={<LineChart />} title="Auidtly" description="Widgets de métricas y gráficos embebibles." badge="Beta" />
-          <AnimatedCard icon={<Wrench />} title="DevOps Lite" description="Plantillas CI/CD y alertas ligeras." badge="Próximamente" />
-          <AnimatedCard icon={<Wrench />} title="PhishGuard" description="Plantillas CI/CD y alertas ligeras." badge="Soon" />
+          <AnimatedCard icon={<LineChart />} title="Auidtly" description="Widgets de métricas y gráficos embebibles." badge="Beta" href="/webguard" />
+          <AnimatedCard icon={<Wrench />} title="DevOps Lite" description="Plantillas CI/CD y alertas ligeras." badge="Próximamente" href="/webguard" />
+          <AnimatedCard icon={<Wrench />} title="PhishGuard" description="Plantillas CI/CD y alertas ligeras." badge="Soon" href="/webguard"/>
         </section>
         <section className="max-w-6xl mx-auto px-6 pb-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {[
