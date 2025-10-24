@@ -1,12 +1,18 @@
 "use client";
 import { useState } from "react";
-import { ShieldCheck, FileText, Globe } from "lucide-react";
+import { ShieldCheck, FileText } from "lucide-react";
 import Header from "@/components/Header";
+
+// 🔹 Definimos el tipo del estado del informe
+type Report = {
+  score: number;
+  issues: string[];
+};
 
 export default function WebGuardPage() {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [report, setReport] = useState(null);
+  const [report, setReport] = useState<Report | null>(null); // ✅ Tipado correcto
 
   const handleAnalyze = async () => {
     setLoading(true);
@@ -49,7 +55,9 @@ export default function WebGuardPage() {
                 <ShieldCheck className="h-5 w-5 text-accent" />
                 Resultado de análisis
               </h3>
-              <p className="mt-2 text-sm">Puntuación general: <b>{report.score}/100</b></p>
+              <p className="mt-2 text-sm">
+                Puntuación general: <b>{report.score}/100</b>
+              </p>
               <ul className="mt-3 list-disc list-inside text-sm text-muted-foreground">
                 {report.issues.map((i) => (
                   <li key={i}>{i}</li>
