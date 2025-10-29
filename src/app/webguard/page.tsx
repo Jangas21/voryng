@@ -2,25 +2,28 @@
 import { useState } from "react";
 import { ShieldCheck, FileText } from "lucide-react";
 import Header from "@/components/Header";
+import { useAuth } from "@/contexts/AuthProvider";
+import AuthModal from "@/components/AuthModal";
+import { supabase } from "@/lib/supabaseClient";
 
-type Report = {
-  score: number;
-  issues: string[];
-};
+type Report = { score: number; issues: string[]; };
 
 export default function WebGuardPage() {
+  const { user } = useAuth();
+  const [showAuth, setShowAuth] = useState(false);
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [report, setReport] = useState<Report | null>(null);
 
   const handleAnalyze = async () => {
+    if (!user) { setShowAuth(true); return; }
     setLoading(true);
-    setTimeout(() => {
-      setReport({
-        score: 87,
-        issues: ["Header X-Frame-Options ausente", "Cookie sin Secure"],
-      });
+    setTimeout(async () => {
+      setReport({ score: 87, issues: ["Header X-Frame-Options ausente", "Cookie sin Secure"] });
       setLoading(false);
+      await supabase.from("scans").insert([
+      { user_id: user.id, url, score: newReport.score, issues: newReport.issues }
+      ]);
     }, 1500);
   };
 
@@ -54,13 +57,9 @@ export default function WebGuardPage() {
                 <ShieldCheck className="h-5 w-5 text-accent" />
                 Resultado de análisis
               </h3>
-              <p className="mt-2 text-sm">
-                Puntuación general: <b>{report.score}/100</b>
-              </p>
+              <p className="mt-2 text-sm">Puntuación general: <b>{report.score}/100</b></p>
               <ul className="mt-3 list-disc list-inside text-sm text-muted-foreground">
-                {report.issues.map((i) => (
-                  <li key={i}>{i}</li>
-                ))}
+                {report.issues.map((i) => (<li key={i}>{i}</li>))}
               </ul>
               <button className="btn-secondary mt-4 inline-flex items-center gap-2">
                 <FileText className="h-4 w-4" /> Exportar a PDF
@@ -69,6 +68,9 @@ export default function WebGuardPage() {
           )}
         </section>
       </div>
+
+      {/* ✅ Modal global para este flujo */}
+      <AuthModal open={showAuth} onClose={()=>setShowAuth(false)} />
     </main>
   );
 }

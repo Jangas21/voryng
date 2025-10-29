@@ -10,19 +10,19 @@ export default function BackgroundLiquidEther() {
       <div className="absolute inset-0">
         <LiquidEther
           colors={["#5227FF", "#FF9FFC", "#B19EEF"]}
-          mouseForce={20}
+          mouseForce={30}
           cursorSize={100}
           isViscous={false}
           viscous={30}
           iterationsViscous={32}
           iterationsPoisson={32}
           resolution={0.8}
-          isBounce={false}
+          isBounce={true}
           autoDemo={true}
-          autoSpeed={1}
+          autoSpeed={5}
           autoIntensity={3}
           takeoverDuration={0.25}
-          autoResumeDelay={1000}
+          autoResumeDelay={2}
           autoRampDuration={0.6}
         />
       </div>

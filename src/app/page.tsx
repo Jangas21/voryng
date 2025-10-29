@@ -16,7 +16,7 @@ export default function Home() {
             Suite de microherramientas y automatizaciones. Empieza con WebGuard y añade módulos cuando los necesites.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <a className="btn-primary" href="#demo">Probar demo</a>
+            <a className="btn-primary" href="/webguard">Probar Webguard</a>
             <a className="inline-flex items-center gap-2 text-accent hover:text-accentAlt transition" href="#docs">
               Ver documentación →
             </a>

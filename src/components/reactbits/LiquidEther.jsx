@@ -123,8 +123,6 @@ export default function LiquidEther({
         this._onMouseMove = this.onDocumentMouseMove.bind(this);
         this._onTouchStart = this.onDocumentTouchStart.bind(this);
         this._onTouchMove = this.onDocumentTouchMove.bind(this);
-        this._onMouseEnter = this.onMouseEnter.bind(this);
-        this._onMouseLeave = this.onMouseLeave.bind(this);
         this._onTouchEnd = this.onTouchEnd.bind(this);
         this.isHoverInside = false;
         this.hasUserControl = false;
@@ -139,21 +137,18 @@ export default function LiquidEther({
       }
       init(container) {
         this.container = container;
-        container.addEventListener('mousemove', this._onMouseMove, false);
-        container.addEventListener('touchstart', this._onTouchStart, false);
-        container.addEventListener('touchmove', this._onTouchMove, false);
-        container.addEventListener('mouseenter', this._onMouseEnter, false);
-        container.addEventListener('mouseleave', this._onMouseLeave, false);
-        container.addEventListener('touchend', this._onTouchEnd, false);
+        // Listen on window so pointer-events:none does not block tracking
+        window.addEventListener('mousemove', this._onMouseMove, false);
+        window.addEventListener('touchstart', this._onTouchStart, false);
+        window.addEventListener('touchmove', this._onTouchMove, false);
+        window.addEventListener('touchend', this._onTouchEnd, false);
       }
       dispose() {
-        if (!this.container) return;
-        this.container.removeEventListener('mousemove', this._onMouseMove, false);
-        this.container.removeEventListener('touchstart', this._onTouchStart, false);
-        this.container.removeEventListener('touchmove', this._onTouchMove, false);
-        this.container.removeEventListener('mouseenter', this._onMouseEnter, false);
-        this.container.removeEventListener('mouseleave', this._onMouseLeave, false);
-        this.container.removeEventListener('touchend', this._onTouchEnd, false);
+        // Always try to detach from window
+        try { window.removeEventListener('mousemove', this._onMouseMove, false); } catch (e) { void 0; }
+        try { window.removeEventListener('touchstart', this._onTouchStart, false); } catch (e) { void 0; }
+        try { window.removeEventListener('touchmove', this._onTouchMove, false); } catch (e) { void 0; }
+        try { window.removeEventListener('touchend', this._onTouchEnd, false); } catch (e) { void 0; }
       }
       setCoords(x, y) {
         if (!this.container) return;
@@ -172,9 +167,17 @@ export default function LiquidEther({
         this.mouseMoved = true;
       }
       onDocumentMouseMove(event) {
+        if (!this.container) return;
+        const rect = this.container.getBoundingClientRect();
+        const inside =
+          event.clientX >= rect.left &&
+          event.clientX <= rect.right &&
+          event.clientY >= rect.top &&
+          event.clientY <= rect.bottom;
+        this.isHoverInside = inside;
+        if (!inside) return;
         if (this.onInteract) this.onInteract();
         if (this.isAutoActive && !this.hasUserControl && !this.takeoverActive) {
-          const rect = this.container.getBoundingClientRect();
           const nx = (event.clientX - rect.left) / rect.width;
           const ny = (event.clientY - rect.top) / rect.height;
           this.takeoverFrom.copy(this.coords);
@@ -189,27 +192,39 @@ export default function LiquidEther({
         this.hasUserControl = true;
       }
       onDocumentTouchStart(event) {
+        if (!this.container) return;
         if (event.touches.length === 1) {
           const t = event.touches[0];
+          const rect = this.container.getBoundingClientRect();
+          const inside =
+            t.clientX >= rect.left &&
+            t.clientX <= rect.right &&
+            t.clientY >= rect.top &&
+            t.clientY <= rect.bottom;
+          this.isHoverInside = inside;
+          if (!inside) return;
           if (this.onInteract) this.onInteract();
           this.setCoords(t.pageX, t.pageY);
           this.hasUserControl = true;
         }
       }
       onDocumentTouchMove(event) {
+        if (!this.container) return;
         if (event.touches.length === 1) {
           const t = event.touches[0];
+          const rect = this.container.getBoundingClientRect();
+          const inside =
+            t.clientX >= rect.left &&
+            t.clientX <= rect.right &&
+            t.clientY >= rect.top &&
+            t.clientY <= rect.bottom;
+          this.isHoverInside = inside;
+          if (!inside) return;
           if (this.onInteract) this.onInteract();
           this.setCoords(t.pageX, t.pageY);
         }
       }
       onTouchEnd() {
-        this.isHoverInside = false;
-      }
-      onMouseEnter() {
-        this.isHoverInside = true;
-      }
-      onMouseLeave() {
         this.isHoverInside = false;
       }
       update() {
