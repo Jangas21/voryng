@@ -15,15 +15,30 @@ export default function WebGuardPage() {
   const [loading, setLoading] = useState(false);
   const [report, setReport] = useState<Report | null>(null);
 
-  const handleAnalyze = async () => {
-    if (!user) { setShowAuth(true); return; }
+const handleAnalyze = async () => {
+    if (!user) {
+      setShowAuth(true);
+      return;
+    }
     setLoading(true);
     setTimeout(async () => {
-      setReport({ score: 87, issues: ["Header X-Frame-Options ausente", "Cookie sin Secure"] });
+      const newReport: Report = {
+        score: 87,
+        issues: ["Header X-Frame-Options ausente", "Cookie sin Secure"],
+      };
+      setReport(newReport);
       setLoading(false);
-      await supabase.from("scans").insert([
-      { user_id: user.id, url, score: newReport.score, issues: newReport.issues }
+      const { error } = await supabase.from("scans").insert([
+        {
+          user_id: user.id,
+          url,
+          score: newReport.score,
+          issues: newReport.issues,
+        },
       ]);
+      if (error) {
+        console.error("Error guardando el análisis:", error);
+      }
     }, 1500);
   };
 
